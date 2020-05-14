@@ -1,13 +1,16 @@
 version: 2.1
-
 orbs:
- android: circleci/android@0.2.0
-
+  node: circleci/node@1.1.6
 jobs:
-  build:
-    executor: android/android
-        
+  build-and-test:
+    executor:
+      name: node/default
     steps:
       - checkout
-      - run:
-          command: ./gradlew build
+      - node/with-cache:
+          steps:
+            - run: npm install
+workflows:
+    build-and-test:
+      jobs:
+        - build-and-test
